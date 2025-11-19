@@ -37,7 +37,7 @@ server.listen(1)
 print("OTP server started...")
 print(f"Listening at {SOCKET_PATH}")
 
-generate_otp()  # generate OTP when server starts
+generate_otp() 
 
 while True:
     conn, _ = server.accept()
