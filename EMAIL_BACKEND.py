@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""
-email_otp_server.py
-OTP backend that sends OTP to configured email via Gmail SMTP (App Password).
-Socket protocol (UNIX socket):
-- Client sends "GET_OTP" -> server generates OTP, sends email, replies "SENT\n"
-- Client sends "VERIFY:<otp>" -> server replies "OK\n", "FAIL\n" or "EXPIRED\n"
-"""
+
 
 import socket, os, signal, sys, random, time
 import smtplib
@@ -14,11 +8,10 @@ from email.message import EmailMessage
 SOCKET_PATH = "/tmp/secure_auth_otp.sock"
 OTP = None
 OTP_EXPIRY = 0
-OTP_TTL = 60  # seconds
+OTP_TTL = 60  
 LAST_SENT = 0
-RESEND_COOLDOWN = 5  # seconds between generate requests
+RESEND_COOLDOWN = 5  
 
-# load config from ~/.secure-auth/email.conf
 def load_config(path=os.path.expanduser("~/.secure-auth/email.conf")):
     cfg = {}
     if not os.path.exists(path):
@@ -39,7 +32,7 @@ def send_email(smtp_user, smtp_pass, to_email, subject, body):
     msg["To"] = to_email
     msg.set_content(body)
 
-    # Gmail SMTP over SSL
+   
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20) as smtp:
         smtp.login(smtp_user, smtp_pass)
         smtp.send_message(msg)
@@ -48,7 +41,7 @@ def generate_otp():
     global OTP, OTP_EXPIRY, LAST_SENT
     now = time.time()
     if now - LAST_SENT < RESEND_COOLDOWN:
-        # avoid hammering; still generate new OTP but respect cooldown
+       
         pass
     OTP = f"{random.randint(100000, 999999):06d}"
     OTP_EXPIRY = time.time() + OTP_TTL
@@ -67,7 +60,7 @@ def cleanup(*args):
 signal.signal(signal.SIGINT, cleanup)
 signal.signal(signal.SIGTERM, cleanup)
 
-# --- start server ---
+
 try:
     cfg = load_config()
     SMTP_USER = cfg["SMTP_USER"]
@@ -79,7 +72,7 @@ except Exception as e:
     print("Create config at ~/.secure-auth/email.conf (see README). Exiting.")
     sys.exit(1)
 
-# remove stale socket
+
 if os.path.exists(SOCKET_PATH):
     try: os.remove(SOCKET_PATH)
     except: pass
@@ -90,7 +83,7 @@ os.chmod(SOCKET_PATH, 0o600)
 server.listen(5)
 print("Email OTP server started. Listening on", SOCKET_PATH)
 
-# For debugging: print when OTP is generated (you may remove this in production)
+
 DEBUG_PRINT_OTP = False
 
 while True:
@@ -116,7 +109,7 @@ while True:
                 subject = "Your SecureAuth OTP code"
                 try:
                     send_email(SMTP_USER, SMTP_PASSWORD, TO_EMAIL, subject, body)
-                    # reply to client
+                  
                     conn.sendall(b"SENT\n")
                     if DEBUG_PRINT_OTP:
                         print("[DEBUG] Sent OTP:", otp)
