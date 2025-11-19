@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""
-mock_auth_server.py
-A simple test server implementing a tiny socket protocol:
-- Listens on UNIX socket path (same as GUI)
-- Reads a password line, compares to TEST_PASSWORD, replies "OK\n" or "FAIL\n"
-This is for Phase 1 testing only.
-"""
+
 
 import os
 import socket
