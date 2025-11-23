@@ -38,7 +38,7 @@ print("OTP server started...")
 print(f"Listening at {SOCKET_PATH}")
 
 generate_otp() 
-
+xx
 while True:
     conn, _ = server.accept()
     data = conn.recv(1024).decode().strip()
