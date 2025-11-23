@@ -4,7 +4,7 @@ import sys
 import socket
 import os
 from PyQt5 import QtWidgets, QtCore
-cc
+
 SOCKET_PATH = "/tmp/secure_auth_test.sock"  # test socket (change for production)
 
 class PasswordWindow(QtWidgets.QWidget):
