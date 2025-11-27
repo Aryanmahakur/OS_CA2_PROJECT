@@ -14,7 +14,7 @@ class PasswordWindow(QtWidgets.QWidget):
         self.setWindowTitle("Secure Sign-In — Password")
         self.setFixedSize(420, 180)
 
-    def init_ui(self):
+    def init_ui(self):F
         layout = QtWidgets.QVBoxLayout()
 
         label = QtWidgets.QLabel("Enter your system password")
