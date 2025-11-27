@@ -113,7 +113,7 @@ while True:
                     conn.sendall(b"SENT\n")
                     if DEBUG_PRINT_OTP:
                         print("[DEBUG] Sent OTP:", otp)
-                except Exception as e:s
+                except Exception as e:
                     print("Error sending email:", e)
                     conn.sendall(b"ERROR\n")
 
