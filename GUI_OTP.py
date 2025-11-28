@@ -13,7 +13,7 @@ def send_to_otp_server(message):
     client.connect(SOCKET_PATH)
     client.sendall(message.encode() + b"\n")
     response = client.recv(1024).decode().strip()
-    client.close()
+    client.close()D
     return response
 
 class OTPWindow(QtWidgets.QWidget):
